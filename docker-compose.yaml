@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  bazi-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4545:4545"
+    restart: unless-stopped
+    environment:
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4545/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
